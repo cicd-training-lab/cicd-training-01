@@ -1,3 +1,5 @@
+# 演習 3-3 用の Workflow
+# CI のログとプロジェクトの設定を見比べて、原因を探す。
 name: CI
 
 on:
@@ -24,7 +26,7 @@ jobs:
         uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
         with:
           distribution: temurin
-          java-version: "21"
+          java-version: "17"
           cache: maven
 
       - name: Run Maven tests
