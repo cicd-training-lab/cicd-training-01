@@ -1,0 +1,45 @@
+name: Post-merge automation
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Package and prepare report
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out main
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up Temurin JDK
+        uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+
+      - name: Package and generate test report
+        run: >-
+          ./mvnw --batch-mode package
+          org.apache.maven.plugins:maven-surefire-report-plugin:3.5.6:report-only
+
+      - name: Upload JAR artifact
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: cicd-training-jar
+          path: target/cicd-training-1.0.0.jar
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Upload test report artifact
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: test-report-site
+          path: target/site
+          if-no-files-found: error
+          retention-days: 7
