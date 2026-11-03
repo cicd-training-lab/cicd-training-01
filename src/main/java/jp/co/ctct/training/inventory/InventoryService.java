@@ -22,7 +22,8 @@ public class InventoryService {
             throw new IllegalArgumentException("引当数量は 1 以上で指定してください: " + quantity);
         }
         if (item.stock() >= quantity) {
-            return AllocationResult.success(item.withStock(item.stock() - quantity), quantity);
+            String remaining = item.stock() - quantity;
+            return AllocationResult.success(item.withStock(remaining), quantity);
         }
         return AllocationResult.failure(item, quantity);
     }
