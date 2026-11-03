@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>jp.co.ctct.training</groupId>
+  <artifactId>cicd-training</artifactId>
+  <version>1.0.0</version>
+  <packaging>jar</packaging>
+
+  <name>cicd-training</name>
+  <description>「GitHubによるCI/CD入門」演習用の在庫管理ライブラリ (UI なし・テスト対象のドメインロジックのみ)</description>
+
+  <!-- 再現性のため、バージョンはすべて完全指定 -->
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <!-- Java 21 (LTS) -->
+    <maven.compiler.release>21</maven.compiler.release>
+    <junit.version>5.10.2</junit.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.13.0</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.2.5</version>
+      </plugin>
+      <!-- 第 5 章: Surefire の XML 結果を GitHub Pages 用 HTML へ変換する。 -->
+      <!-- 直接実行時の既定出力は版で変わり得るため、出力先と入口名も固定する。 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-report-plugin</artifactId>
+        <version>3.5.6</version>
+        <configuration>
+          <outputDirectory>${project.build.directory}/site</outputDirectory>
+          <outputName>index</outputName>
+          <linkXRef>false</linkXRef>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.4.1</version>
+      </plugin>
+    </plugins>
+  </build>
+</project>
