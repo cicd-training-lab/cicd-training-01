@@ -1,0 +1,12 @@
+# 改行コードの固定
+# Git for Windows の既定 (core.autocrlf=true) で clone しても、
+# Git Bash の ./mvnw が CRLF で止まらないようにする。
+
+# テキストファイルはリポジトリ内では LF にそろえる
+* text=auto
+
+# Maven Wrapper のシェルスクリプトは、どの OS でも LF で取り出す
+/mvnw text eol=lf
+
+# Windows のバッチファイルは CRLF で取り出す
+*.cmd text eol=crlf
