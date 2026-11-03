@@ -1,0 +1,33 @@
+# 演習 3-3 用の Workflow
+# CI のログとプロジェクトの設定を見比べて、原因を探す。
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Java test
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out merge candidate
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up Temurin JDK
+        uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+
+      - name: Run Maven tests
+        run: ./mvnw test
